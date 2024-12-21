@@ -8,6 +8,7 @@ require("dotenv").config();
 const authRoutes = require("./routes/auth");
 const healthRoutes = require("./routes/health");
 const dashboardRoutes = require("./routes/dashboard");
+const bussinessFormRoutes = require("./routes/bussinessForm");
 
 // Constants
 const PORT = process.env.PORT || 3003;
@@ -19,7 +20,14 @@ const app = express();
 // Middleware
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000', // Only the origin, no paths
+  credentials: true, // Allow credentials
+};
+app.use(cors(corsOptions));
+
+// Handle Preflight Requests Globally (Optional but Recommended)
+app.options('*', cors(corsOptions));
 
 // MongoDB Connection
 const connectDB = async () => {
@@ -36,6 +44,7 @@ const connectDB = async () => {
 app.use("/auth", authRoutes);
 app.use("/health", healthRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/bussinessForm", bussinessFormRoutes);
 // Error handler
 app.use((err, req, res, next) => {
   console.error(err);

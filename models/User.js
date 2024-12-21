@@ -1,34 +1,27 @@
-const mongoose = require("mongoose");
+// models/User.js
+const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema(
-  {
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      select: false,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    lastLogin: {
-      type: Date,
-      default: null,
-    },
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 3
   },
-  { timestamps: true }
-);
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false  // This ensures password isn't returned in queries by default
+  },
+  lastLogin: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);
